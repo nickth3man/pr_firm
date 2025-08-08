@@ -2,3 +2,4 @@ pocketflow>=0.0.1
 openai>=1.30.0
 python-dotenv>=1.0.0
 PyYAML>=6.0
+gradio>=4.31.0

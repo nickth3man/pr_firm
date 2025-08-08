@@ -30,19 +30,19 @@ def build_guidelines(platform: str, persona_voice: Dict, intent: str, platform_n
         links = {"allowed": True, "placement": "end"}
         markdown = False
     elif platform == "instagram":
-        limits = {"chars": 2200}
+        limits = {"chars": 2200, "reveal_cutoff": 125}
         structure = ["hook", "value", "cta"]
         hashtags = {"count": 5, "placement": "end"}
         links = {"allowed": False, "placement": None}
         markdown = False
     elif platform == "linkedin":
-        limits = {"chars": 3000}
+        limits = {"chars": 3000, "reveal_cutoff": 210}
         structure = ["hook", "value", "cta"]
         hashtags = {"count": 3, "placement": "end"}
         links = {"allowed": True, "placement": "end"}
         markdown = False
     elif platform == "blog":
-        limits = {"words": 1200}
+        limits = {"words": 1200, "approx_chars": 1200 * 5}
         structure = ["title", "intro", "sections", "conclusion", "cta"]
         hashtags = []
         links = {"allowed": True, "placement": "throughout"}
@@ -61,6 +61,9 @@ def build_guidelines(platform: str, persona_voice: Dict, intent: str, platform_n
         links = {"allowed": True, "placement": "end"}
         markdown = False
 
+    # Default per-section budgets: prefer explicit section_budgets, otherwise estimate from chars
+    section_budgets = platform_nuance.get("section_budgets") if isinstance(platform_nuance.get("section_budgets"), dict) else None
+
     guidelines: Dict[str, Any] = {
         "limits": limits,
         "structure": structure,
@@ -69,7 +72,8 @@ def build_guidelines(platform: str, persona_voice: Dict, intent: str, platform_n
         "links": links,
         "markdown": markdown,
         "cta": platform_nuance.get("cta", ""),
-        "notes": platform_nuance.get("notes", ""),
+        "notes": platform_nuance.get("notes", []) if isinstance(platform_nuance.get("notes"), list) else ([platform_nuance.get("notes")] if platform_nuance.get("notes") else []),
+        "section_budgets": section_budgets or {},
     }
 
     # Apply platform nuance overrides
@@ -79,9 +83,8 @@ def build_guidelines(platform: str, persona_voice: Dict, intent: str, platform_n
             # Use the upper bound as target count
             guidelines["hashtags"]["count"] = rng[1]
     if platform == "reddit" and isinstance(platform_nuance.get("tl_dr_required"), bool):
-        guidelines.setdefault("notes", "")
-        if platform_nuance["tl_dr_required"] and "TL;DR" not in guidelines["notes"]:
-            guidelines["notes"] = (guidelines["notes"] + "\nTL;DR recommended at end.").strip()
+        if platform_nuance["tl_dr_required"] and not any("TL;DR" in n for n in guidelines["notes"]):
+            guidelines["notes"].append("TL;DR recommended at end.")
     if platform == "instagram" and platform_nuance.get("line_breaks"):
         guidelines.setdefault("style", {}).setdefault("formatting", {})
         guidelines["style"]["formatting"]["line_breaks"] = platform_nuance["line_breaks"]
@@ -95,5 +98,8 @@ def build_guidelines(platform: str, persona_voice: Dict, intent: str, platform_n
             "rules": reddit.get("rules_text") or reddit.get("rules"),
             "description": reddit.get("description_text") or reddit.get("description"),
         }
+        # Ensure subreddit name normalized hint present
+        if guidelines["reddit_info"].get("subreddit"):
+            guidelines["notes"].append(f"Posting to r/{guidelines['reddit_info']['subreddit']}")
 
     return guidelines

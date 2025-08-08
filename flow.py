@@ -25,7 +25,7 @@ class FormatGuidelinesBatch(BatchFlow):
         platforms = shared.get("task_requirements", {}).get("platforms", [])
         return [{"platform": p} for p in platforms]
 
-    def post(self, shared, prep_res, exec_res):
+    def post(self, shared, prep_res, exec_res_list):
         # Update workflow state after all platform guidelines are produced
         shared.setdefault("workflow_state", {})
         shared["workflow_state"]["current_stage"] = "content_craftsman"

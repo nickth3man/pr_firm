@@ -281,21 +281,46 @@ class ContentCraftsmanNode(Node):
             structure: List[str] = guidelines.get("structure", [])
             if not structure:
                 return {}
-            # Use char limit when available; else a small default per section
-            total_chars = guidelines.get("limits", {}).get("chars") or guidelines.get("limits", {}).get("body", 800)
+            # Prefer explicit section_budgets; else derive from char limits or approx_chars
+            explicit = guidelines.get("section_budgets") or {}
+            if isinstance(explicit, dict) and explicit:
+                return {s: int(explicit.get(s, 120)) for s in structure}
+            limits = guidelines.get("limits", {})
+            total_chars = (
+                limits.get("chars")
+                or limits.get("body")
+                or limits.get("approx_chars")
+                or 800
+            )
             per = max(40, int(total_chars / max(1, len(structure))))
             return {s: per for s in structure}
 
-        def enforce_placements(text: str, g: Dict[str, Any]) -> str:
-            # Move hashtags to end if required
+        def enforce_placements(text: str, g: Dict[str, Any], platform: str) -> str:
             hashtags = g.get("hashtags")
-            if isinstance(hashtags, dict) and hashtags.get("placement") == "end":
-                tags = re.findall(r"#\w+", text)
+            # Normalize whitespace first
+            out = re.sub(r"[ \t]+\n", "\n", text).strip()
+            out = re.sub(r"\n{3,}", "\n\n", out)
+            if isinstance(hashtags, dict):
+                count = int(hashtags.get("count", 0) or 0)
+                placement = hashtags.get("placement")
+                tags = re.findall(r"#\w+", out)
                 if tags:
-                    text_wo_tags = re.sub(r"\s*#\w+", "", text).strip()
-                    end_tags = " " + " ".join(tags[-hashtags.get("count", len(tags)):])
-                    text = text_wo_tags + "\n" + end_tags
-            return text
+                    if platform in ("instagram", "linkedin") and placement == "end":
+                        out_wo = re.sub(r"\s*#\w+", "", out).strip()
+                        end_tags = " ".join(tags[-count or len(tags):]) if count else " ".join(tags)
+                        out = out_wo.rstrip() + "\n" + end_tags
+                    elif platform in ("twitter", "x"):
+                        # Allow 1–3 inline kept, move extras to end
+                        keep = min(max(count or 2, 1), 3)
+                        if len(tags) > keep:
+                            out_wo = re.sub(r"\s*#\w+", "", out).strip()
+                            inline = " ".join(tags[:keep])
+                            end = " ".join(tags[keep:])
+                            out = f"{inline} {out_wo}\n{end}".strip()
+                    else:
+                        # Reddit/Email/Blog: remove hashtags entirely
+                        out = re.sub(r"\s*#\w+", "", out).strip()
+            return out
 
         out: Dict[str, Any] = {}
         topic = prep["topic"]
@@ -325,7 +350,7 @@ class ContentCraftsmanNode(Node):
                 parts.append(sec_text.strip())
 
             text = "\n".join(parts)
-            text = enforce_placements(text, g)
+            text = enforce_placements(text, g, platform)
             # Final pass to remove forbidden patterns
             text = rewrite_with_constraints(text, prep["persona"], g)
             out[platform] = {"sections": sections, "text": text}
