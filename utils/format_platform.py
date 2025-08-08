@@ -1,4 +1,4 @@
-from typing import Dict, Optional
+from typing import Dict, Optional, Any
 
 
 def build_guidelines(platform: str, persona_voice: Dict, intent: str, platform_nuance: Optional[Dict] = None, reddit: Optional[Dict] = None) -> Dict:
@@ -10,7 +10,7 @@ def build_guidelines(platform: str, persona_voice: Dict, intent: str, platform_n
     platform = platform.lower()
     platform_nuance = platform_nuance or {}
 
-    base_style = {
+    base_style: Dict[str, Any] = {
         "forbiddens": persona_voice.get("forbiddens", {}),
         "voice": persona_voice.get("styles", {}).get("voice", "clear"),
         "axes": persona_voice.get("axes", {}),
@@ -61,7 +61,7 @@ def build_guidelines(platform: str, persona_voice: Dict, intent: str, platform_n
         links = {"allowed": True, "placement": "end"}
         markdown = False
 
-    guidelines = {
+    guidelines: Dict[str, Any] = {
         "limits": limits,
         "structure": structure,
         "style": base_style,
@@ -72,11 +72,28 @@ def build_guidelines(platform: str, persona_voice: Dict, intent: str, platform_n
         "notes": platform_nuance.get("notes", ""),
     }
 
+    # Apply platform nuance overrides
+    if isinstance(hashtags, dict) and isinstance(platform_nuance.get("hashtag_count_range"), (list, tuple)):
+        rng = platform_nuance["hashtag_count_range"]
+        if len(rng) == 2:
+            # Use the upper bound as target count
+            guidelines["hashtags"]["count"] = rng[1]
+    if platform == "reddit" and isinstance(platform_nuance.get("tl_dr_required"), bool):
+        guidelines.setdefault("notes", "")
+        if platform_nuance["tl_dr_required"] and "TL;DR" not in guidelines["notes"]:
+            guidelines["notes"] = (guidelines["notes"] + "\nTL;DR recommended at end.").strip()
+    if platform == "instagram" and platform_nuance.get("line_breaks"):
+        guidelines.setdefault("style", {}).setdefault("formatting", {})
+        guidelines["style"]["formatting"]["line_breaks"] = platform_nuance["line_breaks"]
+    if platform == "instagram" and platform_nuance.get("emoji_freq"):
+        guidelines.setdefault("style", {}).setdefault("formatting", {})
+        guidelines["style"]["formatting"]["emoji_freq"] = platform_nuance["emoji_freq"]
+
     if platform == "reddit" and reddit:
         guidelines["reddit_info"] = {
             "subreddit": reddit.get("name"),
-            "rules": reddit.get("rules"),
-            "description": reddit.get("description"),
+            "rules": reddit.get("rules_text") or reddit.get("rules"),
+            "description": reddit.get("description_text") or reddit.get("description"),
         }
 
     return guidelines
