@@ -73,6 +73,124 @@ Notes:
 - Presets are stored at `assets/presets.json` by default; override with `PRESETS_PATH` if desired.
 
 
+## Troubleshooting
+
+### Common Setup Issues
+
+#### 1. **OpenRouter API Key Issues**
+
+**Error**: `openai.AuthenticationError: Incorrect API key provided`
+- **Solution**: Verify your `OPENROUTER_API_KEY` in `.env` is correct
+- **Check**: Visit [OpenRouter Keys](https://openrouter.ai/keys) to verify your key
+- **Test**: Run `python -c "import os; from dotenv import load_dotenv; load_dotenv(); print('Key loaded:', bool(os.getenv('OPENROUTER_API_KEY')))"`
+
+**Error**: `openai.RateLimitError: Rate limit exceeded`
+- **Solution**: Check your OpenRouter account limits or upgrade your plan
+- **Workaround**: Add delays between requests or reduce batch sizes
+
+#### 2. **Virtual Environment Issues**
+
+**Error**: `ModuleNotFoundError: No module named 'pocketflow'`
+- **Solution**: Ensure you're in the correct virtual environment
+- **Check**: Run `which python` or `python --version` to verify environment
+- **Fix**: Activate venv: `source .venv/bin/activate` (Linux/Mac) or `.venv\Scripts\activate` (Windows)
+
+**Error**: `pip install -r requirements.txt` fails
+- **Solution**: Upgrade pip first: `pip install --upgrade pip`
+- **Alternative**: Install packages individually: `pip install pocketflow openai python-dotenv PyYAML gradio`
+
+#### 3. **Python Version Issues**
+
+**Error**: `Python 3.9+ required but found 3.8`
+- **Solution**: Check Python version: `python --version`
+- **Fix**: Install Python 3.9+ or use `python3` instead of `python`
+
+#### 4. **Environment File Issues**
+
+**Error**: `.env file not found`
+- **Solution**: Copy `.env.example` to `.env`: `cp .env.example .env`
+- **Check**: Ensure `.env` exists in project root: `ls -la .env`
+
+**Error**: `Environment variable not loaded`
+- **Solution**: Verify `.env` format (no spaces around `=`)
+- **Test**: `python -c "from dotenv import load_dotenv; import os; load_dotenv(); print(os.getenv('OPENROUTER_API_KEY', 'NOT_FOUND'))"`
+
+#### 5. **Model/Platform Issues**
+
+**Error**: `openai.NotFoundError: The model 'xyz' does not exist`
+- **Solution**: Check available models at [OpenRouter Models](https://openrouter.ai/models)
+- **Fix**: Update `OPENROUTER_MODEL` in `.env` to a valid model name
+
+**Error**: Platform-specific content generation fails
+- **Solution**: Verify platform intents are properly configured
+- **Check**: Review `assets/presets.json` for platform-specific settings
+
+### Testing Setup
+
+#### Running Tests
+
+```bash
+# Run all tests
+pytest
+
+# Run with coverage
+pytest --cov=. --cov-report=html
+
+# Run specific test categories
+pytest -m unit          # Unit tests only
+pytest -m integration   # Integration tests only
+pytest tests/unit/      # Run unit tests directory
+```
+
+#### Common Test Issues
+
+**Error**: `pytest not found`
+- **Solution**: Install test dependencies: `pip install pytest pytest-cov pytest-asyncio`
+
+**Error**: `ModuleNotFoundError` in tests
+- **Solution**: Ensure test environment has all dependencies: `pip install -r requirements.txt`
+
+### Performance Optimization
+
+#### Common Performance Issues
+
+**Slow LLM Responses**
+- **Solution**: Experiment with different models in `OPENROUTER_MODEL`
+- **Alternative**: Use models with faster inference times
+
+**Memory Issues**
+- **Solution**: Reduce batch sizes in PocketFlow configurations
+- **Monitor**: Use `utils/streaming.py` to monitor memory usage
+
+**Rate Limiting**
+- **Solution**: Implement exponential backoff in your flows
+- **Configure**: Adjust retry settings in node configurations
+
+### Getting Help
+
+If you encounter issues not covered here:
+
+1. **Check the logs**: Look for detailed error messages in console output
+2. **Verify versions**: Run `pip list` to check installed package versions
+3. **Test components**: Use `python -c "import pocketflow; print('PocketFlow OK')"` to test individual components
+4. **Community support**: Check [PocketFlow GitHub](https://github.com/the-pocket/PocketFlow) for similar issues
+
+### Development Mode
+
+For development and debugging:
+
+```bash
+# Enable verbose logging
+export PYTHONPATH=$PYTHONPATH:.
+python -c "import logging; logging.basicConfig(level=logging.DEBUG)"
+
+# Run with debug mode
+python main.py --debug
+
+# Test individual components
+python -c "from utils.call_llm import call_llm; print(call_llm('Hello'))"
+```
+
 ## Usage
 
 ### Quickstart (CLI)
