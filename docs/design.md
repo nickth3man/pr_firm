@@ -8,6 +8,7 @@
 > If the requirements are abstract, write concrete user stories
 
 User stories
+
 - As a marketing manager, I want text-only, platform-optimized content (Email,
   Instagram captions, Twitter/X, Reddit, LinkedIn, Blog) that respects each
   medium’s structure and limits.
@@ -20,6 +21,7 @@ User stories
   and a final report if edits stall.
 
 Scope and constraints
+
 - Formatting-only platform nodes. No scraping or platform research.
 - Instagram: captions only (no stories).
 - Reddit: user supplies subreddit name/title, rules, and description/bio (paste).
@@ -32,6 +34,7 @@ Scope and constraints
 - Presets stored locally in JSON (Brand Bible, Email signature, Blog style).
 
 Success criteria
+
 - All generated outputs adhere to platform guidelines and strict style policy.
 - The system streams concise progress milestones and edit-loop summaries.
 - Drafts publish per platform as complete (no token-level streaming).
@@ -40,10 +43,11 @@ Success criteria
 ## Flow Design
 
 > Notes for AI:
+>
 > 1. Consider the design patterns of agent, map-reduce, rag, and workflow. Apply them if they fit.
 > 2. Present a concise, high-level description of the workflow.
 
-### Applicable Design Pattern:
+### Applicable Design Pattern
 
 1. Workflow with a Manager (agent-like intake) and a strict validation pipeline.
 2. Batch over selected platforms to emit guidelines and drafts per platform.
@@ -55,7 +59,7 @@ Success criteria
   - Actions: collect/confirm inputs, propose auto-intents, save/load presets,
     stream milestones, then route execution.
 
-### Flow high-level Design:
+### Flow high-level Design
 
 1. EngagementManagerNode: Conversational intake; collects platforms, intents
    (preset/custom/auto with confirm), topic/goal, Reddit details, Brand Bible
@@ -92,6 +96,7 @@ flowchart TD
 ## Utility Functions
 
 > Notes for AI:
+>
 > 1. Understand the utility function definition thoroughly by reviewing the doc.
 > 2. Include only the necessary utility functions, based on nodes in the flow.
 
@@ -264,7 +269,7 @@ shared = {
 5. PlatformFormattingNodes (Email/Instagram/Twitter/Reddit/LinkedIn/Blog)
    - Purpose: Output a unified Guidelines schema (limits, structure, style,
      hashtags/mentions/links, markdown, CTA, notes; Reddit includes subreddit_name
-     + rules/description notes).
+     - rules/description notes).
    - Type: Regular
    - Steps:
      - prep: Read persona_voice, intent (for this platform), platform_nuance,
@@ -349,6 +354,7 @@ shared = {
       - post: Write final_campaign.*; stream “Packaging complete”.
 
 Notes
+
 - Retries: LLM-heavy nodes (ContentCraftsman, StyleEditor) may use
   max_retries=2, wait=5. Others default to 1.
 - Streaming: Only EngagementManager, StyleCompliance, EditCycleReport, and
