@@ -1,0 +1,19 @@
+{
+    "choices": [
+        {
+            "message": {
+                "role": "assistant",
+                "content": "Here's a LinkedIn post draft following your brand guidelines:\n\n\"The future of AI-powered content creation is here! 🚀\n\nAt PR Firm, we've developed an innovative system that transforms brand guidelines into platform-optimized content in seconds. Our technology:\n\n✅ Maintains 100% brand voice consistency\n✅ Adapts to 15+ social platforms automatically\n✅ Reduces content creation time by 87%\n\nCurious how it works? Let's connect to discuss how we can revolutionize your content strategy! #AI #ContentMarketing #Branding\""
+            },
+            "finish_reason": "stop",
+            "index": 0
+        }
+    ],
+    "usage": {
+        "prompt_tokens": 150,
+        "completion_tokens": 80,
+        "total_tokens": 230
+    },
+    "model": "mistralai/mistral-large",
+    "created": 1677667200
+}

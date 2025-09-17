@@ -247,9 +247,13 @@ See also directory‑level `INDEX.md` files for details.
 pr_firm/
 ├── main.py                     # Entry point (CLI); optional Gradio launcher
 ├── flow.py                     # PocketFlow graph wiring (nodes + transitions)
-├── nodes.py                    # All node implementations (prep → exec → post)
+├── nodes.py                    # Node implementations with shared utilities and base classes
+├── nodes/                      # Modular node implementations (post-refactoring)
+│   ├── __init__.py
+│   ├── engagement_manager.py   # Engagement data preparation and workflow init
+│   └── brand_bible_ingest.py   # Brand bible parsing and voice mapping
 ├── utils/                      # Utilities for LLM calls, parsing, style, presets
-├── docs/                       # High‑level design docs
+├── docs/                       # High‑level design docs and design patterns
 ├── assets/                     # Static assets and locally stored presets
 ├── requirements.txt            # Python dependencies
 ├── .env.example                # Environment variable template
@@ -289,6 +293,10 @@ We welcome improvements! Suggested workflow:
 
 Coding notes:
 - Keep nodes small and single‑purpose; prefer clear `prep/exec/post` boundaries
+- Use type hints throughout for better code clarity and IDE support
+- Implement proper error handling with try/except blocks where appropriate
+- Extract shared functionality into base classes and helper functions
+- Use router patterns for dispatching to specialized implementations
 - Avoid catching exceptions in utilities used by nodes; rely on node retries
 - Log milestone progress through `utils/streaming.Stream`
 

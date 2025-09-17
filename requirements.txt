@@ -1,9 +1,20 @@
-pocketflow>=0.0.1
-openai>=1.30.0
-python-dotenv>=1.0.0
-PyYAML>=6.0
-gradio>=4.31.0
-pytest>=7.0.0
-pytest-cov>=4.0.0
-pytest-asyncio>=0.21.0
-defusedxml>=0.7.1
+# Dependencies have been consolidated into pyproject.toml
+# This file is kept for reference but is no longer used for dependency management
+#
+# To install dependencies:
+#   pip install -e .  # for production dependencies
+#   pip install -e ".[dev]"  # for development dependencies
+#
+# Legacy dependencies (now in pyproject.toml):
+# - pocketflow>=0.0.1
+# - openai>=1.30.0
+# - python-dotenv>=1.0.0
+# - PyYAML>=6.0
+# - gradio>=4.31.0
+# - requests
+# - pytest>=7.0.0 (dev)
+# - pytest-cov>=4.0.0 (dev)
+#
+# Removed unused dependencies:
+# - pytest-asyncio>=0.21.0 (not used in project)
+# - defusedxml>=0.7.1 (not used in project)

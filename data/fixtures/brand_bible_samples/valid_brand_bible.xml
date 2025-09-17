@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<brand_bible>
+    <metadata>
+        <company_name>TechCorp</company_name>
+        <version>1.2</version>
+        <last_updated>2023-11-15</last_updated>
+        <description>Comprehensive brand guidelines for TechCorp</description>
+    </metadata>
+
+    <brand_voice>
+        <description>Professional yet approachable, knowledgeable but not condescending</description>
+        <characteristics>
+            <characteristic>knowledgeable</characteristic>
+            <characteristic>helpful</characteristic>
+            <characteristic>slightly humorous</characteristic>
+            <characteristic>concise</characteristic>
+        </characteristics>
+        <tone>
+            <formal>70%</formal>
+            <friendly>30%</friendly>
+        </tone>
+    </brand_voice>
+
+    <platforms>
+        <twitter>
+            <characteristics>
+                <characteristic>concise</characteristic>
+                <characteristic>engaging</characteristic>
+                <characteristic>hashtag-friendly</characteristic>
+            </characteristics>
+            <style_rules>
+                <rule>Use 280 characters or less</rule>
+                <rule>Include relevant hashtags</rule>
+                <rule>Use emojis sparingly</rule>
+                <rule>End with a call-to-action when appropriate</rule>
+            </style_rules>
+            <content_types>
+                <product_announcement>
+                    <description>New product launches and updates</description>
+                    <examples>
+                        <example>Just launched our new AI-powered widget! 🚀 Check it out: [link]</example>
+                        <example>Big news! Our platform now integrates with [popular tool]. Learn more: [link]</example>
+                    </examples>
+                </product_announcement>
+                <thought_leadership>
+                    <description>Industry insights and expert opinions</description>
+                    <examples>
+                        <example>The future of AI in marketing isn't just about automation—it's about personalization at scale. Here's how we're doing it: [link]</example>
+                        <example>Why data privacy will be the defining issue of the next decade in tech. Our take: [link]</example>
+                    </examples>
+                </thought_leadership>
+            </content_types>
+        </twitter>
+
+        <linkedin>
+            <characteristics>
+                <characteristic>professional</characteristic>
+                <characteristic>insightful</characteristic>
+                <characteristic>value-driven</characteristic>
+            </characteristics>
+            <style_rules>
+                <rule>Use professional but approachable language</rule>
+                <rule>Include industry-relevant statistics when possible</rule>
+                <rule>Use paragraph breaks for readability</rule>
+                <rule>End with a question to encourage engagement</rule>
+            </style_rules>
+            <content_types>
+                <company_update>
+                    <description>Company news and announcements</description>
+                    <examples>
+                        <example>We're thrilled to announce our Series B funding round! This will help us accelerate our mission to [mission statement]. Read more about our plans: [link]</example>
+                        <example>Welcome to the team, [Name]! As our new [Position], they'll be leading our efforts in [area]. Get to know them: [link]</example>
+                    </examples>
+                </company_update>
+                <industry_insight>
+                    <description>Deep dives into industry trends and analysis</description>
+                    <examples>
+                        <example>How AI is transforming customer service: Our analysis of the top 3 trends shaping 2024. What's your organization doing to adapt? [link]</example>
+                        <example>The hidden costs of technical debt—and how to quantify them. Our CTO shares insights from working with Fortune 500 companies: [link]</example>
+                    </examples>
+                </industry_insight>
+            </content_types>
+        </linkedin>
+
+        <facebook>
+            <characteristics>
+                <characteristic>friendly</characteristic>
+                <characteristic>visual</characteristic>
+                <characteristic>community-focused</characteristic>
+            </characteristics>
+            <style_rules>
+                <rule>Use conversational tone</rule>
+                <rule>Keep posts between 1-2 sentences</rule>
+                <rule>Always include a visual element</rule>
+                <rule>Encourage shares and tags</rule>
+            </style_rules>
+            <content_types>
+                <community_engagement>
+                    <description>Posts designed to spark conversation and interaction</description>
+                    <examples>
+                        <example>What's the most useful tech tool you've discovered this year? Share in the comments! ⬇️</example>
+                        <example>Tag a friend who needs to see this! 👇 [image]</example>
+                    </examples>
+                </community_engagement>
+                <behind_the_scenes>
+                    <description>Posts showing company culture and team activities</description>
+                    <examples>
+                        <example>Team lunch today with our remote colleagues! So great to finally meet in person. 🍕 Who else loves hybrid work? [photo]</example>
+                        <example>Our weekly hackathon in action! This team built a prototype in just 2 hours. 💻 What should we build next? [video]</example>
+                    </examples>
+                </behind_the_scenes>
+            </content_types>
+        </facebook>
+    </platforms>
+
+    <style_guide>
+        <grammar_rules>
+            <rule>Use Oxford comma</rule>
+            <rule>Avoid passive voice</rule>
+            <rule>Limit sentences to 30 words maximum</rule>
+            <rule>Use em dashes without spaces—like this</rule>
+        </grammar_rules>
+        <formatting>
+            <rule>One space after periods</rule>
+            <rule>No multiple spaces between words</rule>
+            <rule>Use title case for headings</rule>
+            <rule>Use sentence case for body text</rule>
+        </formatting>
+        <word_choices>
+            <preferred>
+                <term>use</term>
+                <term>utilize</term>
+                <term>help</term>
+                <term>assist</term>
+            </preferred>
+            <avoid>
+                <term>leverage</term>
+                <term>synergize</term>
+                <term>circle back</term>
+            </avoid>
+        </word_choices>
+    </style_guide>
+</brand_bible>

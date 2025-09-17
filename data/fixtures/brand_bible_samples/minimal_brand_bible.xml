@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<brand_bible>
+    <metadata>
+        <company_name>MinimalCorp</company_name>
+        <version>1.0</version>
+    </metadata>
+
+    <brand_voice>
+        <description>Simple and clear</description>
+        <characteristics>
+            <characteristic>clear</characteristic>
+            <characteristic>concise</characteristic>
+        </characteristics>
+    </brand_voice>
+
+    <platforms>
+        <twitter>
+            <characteristics>
+                <characteristic>short</characteristic>
+            </characteristics>
+            <style_rules>
+                <rule>Keep it under 280 characters</rule>
+            </style_rules>
+        </twitter>
+    </platforms>
+</brand_bible>

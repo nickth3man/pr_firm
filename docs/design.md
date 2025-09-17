@@ -52,6 +52,9 @@ Success criteria
 1. Workflow with a Manager (agent-like intake) and a strict validation pipeline.
 2. Batch over selected platforms to emit guidelines and drafts per platform.
 3. Map-ish scaffolding for content: section-by-section generation then assembly.
+4. Router pattern for dispatching platform-specific implementations.
+5. Base class inheritance for shared node functionality.
+6. Helper functions for common operations (budget calculation, hashtag placement).
 
 - Agentic Manager
   - Context: user-provided topic/goal, Brand Bible (XML/preset), chosen platforms,
@@ -74,6 +77,37 @@ Success criteria
 6. ValidationFlow: StyleEditorNode → StyleComplianceNode loop (≤5) → FactValidator
    → BrandGuardian → AuthenticityAuditor.
 7. AgencyDirectorNode: Final packaging and streaming completion.
+
+## Refactored Architecture Patterns
+
+### Post-Refactoring Improvements
+
+The codebase has been refactored to improve maintainability, readability, and modularity:
+
+#### 1. Router Pattern
+- **FormatGuidelinesRouter**: Dispatches to platform-specific guideline nodes based on action strings
+- **Benefits**: Clean separation of routing logic, extensible for new platforms
+- **Implementation**: Uses action-based transitions to route platform names to specialized nodes
+
+#### 2. Base Class Inheritance
+- **_BaseGuidelinesNode**: Shared base class for all platform guideline nodes
+- **Benefits**: Eliminates code duplication, ensures consistent interface
+- **Features**: Common prep/exec/post patterns, platform_name configuration
+
+#### 3. Helper Functions
+- **calculate_section_budgets()**: Determines character budgets for content sections
+- **enforce_hashtag_placements()**: Applies platform-specific hashtag rules
+- **Benefits**: Reusable logic, easier testing, separation of concerns
+
+#### 4. Modular Node Organization
+- **Separate Files**: Each major node moved to dedicated file in `nodes/` directory
+- **Benefits**: Improved readability, easier maintenance, focused responsibilities
+- **Structure**: nodes/engagement_manager.py, nodes/brand_bible_ingest.py, etc.
+
+#### 5. Type Hints and Error Handling
+- **Comprehensive Type Hints**: Dict[str, Any], List, Optional throughout
+- **Try/Except Blocks**: Proper error handling for LLM calls and parsing
+- **Benefits**: Better IDE support, runtime safety, debugging
 
 ```mermaid
 flowchart TD
@@ -223,7 +257,17 @@ shared = {
 
 ### Node Steps
 
-> Notes for AI: Carefully decide whether to use Batch/Async Node/Flow.
+> Notes for AI: Carefully decide whether to use Batch/Async Node/Flow. Router patterns help dispatch to specialized implementations.
+
+#### Router Pattern Implementation
+
+1. FormatGuidelinesRouter
+    - Purpose: Routes batch processing to platform-specific guideline generation
+    - Type: Regular (used within BatchFlow)
+    - Steps:
+      - prep: None (receives platform from BatchFlow params)
+      - exec: None (pure routing logic)
+      - post: Returns platform name as action string for routing
 
 1. EngagementManagerNode
    - Purpose: Centralize user I/O; collect platforms, per-platform intents
@@ -355,6 +399,11 @@ shared = {
 
 Notes
 
+- **Helper Functions**: Use `calculate_section_budgets()` for content partitioning and `enforce_hashtag_placements()` for platform-specific formatting
+- **Router Dispatching**: FormatGuidelinesRouter enables clean extension for new platforms
+- **Base Class Benefits**: _BaseGuidelinesNode ensures consistent interface across platform implementations
+- **Type Safety**: Comprehensive type hints improve code reliability and IDE support
+- **Error Handling**: Try/except blocks provide graceful failure handling for external dependencies
 - Retries: LLM-heavy nodes (ContentCraftsman, StyleEditor) may use
   max_retries=2, wait=5. Others default to 1.
 - Streaming: Only EngagementManager, StyleCompliance, EditCycleReport, and

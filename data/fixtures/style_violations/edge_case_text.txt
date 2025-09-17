@@ -1,0 +1,31 @@
+This text contains edge cases for style violation testing:
+
+1. Extremely long sentence that goes on and on without any proper punctuation or breaks to test how the system handles very long input that might cause buffer overflows or performance issues in the parsing algorithm especially when dealing with complex natural language processing tasks that require significant computational resources and memory allocation to process effectively.
+
+2. Mixed    spaces    between    words    that should be normalized.
+
+3. Special characters: !@#$%^&*()_+{}:"|<>?~` and emojis 😀😃😄😁😆 should be handled properly.
+
+4.
+Multiple
+line
+breaks
+that
+might
+affect
+parsing.
+
+5. "Smart quotes" and “curly quotes” that might need conversion.
+
+6. HTML entities: & < > " &#169; that should be preserved or converted.
+
+7. Unicode characters: 你好，世界！こんにちは世界！안녕하세요 세계! Привет, мир! should be handled.
+
+8.      Tab-indented text that might need normalization.
+
+9.
+    Mixed indentation with
+        different levels that
+    should be normalized.
+
+10. TRADEMARK™ and REGISTERED® symbols that should be preserved.

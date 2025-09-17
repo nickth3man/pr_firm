@@ -1,0 +1,14 @@
+{
+    "error": {
+        "message": "Rate limit exceeded. Please try again in 20 seconds.",
+        "type": "rate_limit_error",
+        "param": null,
+        "code": "rate_limit_exceeded"
+    },
+    "usage": {
+        "prompt_tokens": 50,
+        "completion_tokens": 0,
+        "total_tokens": 50
+    },
+    "model": "mistralai/mistral-large"
+}
