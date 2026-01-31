@@ -21,6 +21,9 @@ __pycache__/
 
 # IDE - VSCode
 .vscode/*
+
+# IDE - Kilocode
+.kilocode/
 !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json
@@ -126,4 +129,3 @@ wheels/
 # Optional REPL history
 .node_repl_history 
 
-.env.example
